@@ -1,0 +1,33 @@
+body{
+  font-family: 'Myriad', Arial;
+  margin: 0;
+  padding: 0;
+}
+
+div.box{
+  background-color: #ffffff;
+  -moz-border-radius: 15px; 
+  -webkit-border-radius: 15px;
+  box-shadow: 10px 10px 5px #000000;
+  padding: 10px;
+}
+
+a,
+a:link,
+a:hover,
+a:visited,
+a:active{
+  font-weight: bold;
+  color: #25375E;
+  text-decoration: none;
+}
+
+table#header{
+  width: 100%;
+  height: 100px;
+  background-color: #3b5998;
+}
+
+table tr td{
+  padding-right: 10px;
+}

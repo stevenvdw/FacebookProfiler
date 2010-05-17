@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+	<head>
+		<title>Facebook Profiler</title>
+		<script type="text/javascript" src="libs/jquery.js"></script>
+	<body>
+		
+		<script>
+		
+		//triggers the update of the ui, once a user logged in successfully
+		function ui_login(){
+			$('#user').html("<a href='javascript: ;' onclick='logout_facebook()'>Logout</a>");
+		}
+		
+		//triggers the reset of the ui, once the user logged out
+		function ui_logout(){
+			$('#user').html("<a href='javascript: ;' onclick='login_facebook()'>Login</a>");
+		}
+		
+		//starts the actual facebook login method, triggered by a button
+		function login_facebook(){
+			FB.login(function(response) {
+			  if (response.session) {
+			    // user successfully logged in
+			  } else {
+			    // user cancelled login
+			  }
+			});
+		}
+		
+		//starts the actual facebook logout method, once the button is pushed
+		function logout_facebook(){
+			FB.logout(function(response) {
+			  ui_logout();
+			});
+		}
+		</script>
+		
+		<!-- needed by the facebook scripts -->
+		<div id="fb-root"></div>
+		
+		<script src="http://connect.facebook.net/en_US/all.js"></script>
+		<script>
+		
+			//initialize the facebook api
+		  FB.init({appId: '111354375573799', status: true, cookie: true, xfbml: true});
+		
+			//subscribe to a changing session, e.g. after the login button is pushed in the popup
+		  FB.Event.subscribe('auth.sessionChange', function(response) {
+		    if (response.session) {
+		      ui_login();
+		    } else {
+		      ui_logout();
+		    }
+		  });
+			
+			//check if the user is logged in or not and display the depending ui
+			FB.getLoginStatus(function(response) {
+			  if (response.session) {
+			    ui_login()();
+			  } else {
+			    ui_logout()();
+			  }
+			});
+		</script>
+		
+		<!-- user login and log out button -->
+		<div id="user"></div>
+		
+</body>
+</html>
