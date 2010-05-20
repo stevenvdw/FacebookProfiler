@@ -1,15 +1,39 @@
 body{
   font-family: 'Myriad', Arial;
+  font-weight: 100;
   margin: 0;
   padding: 0;
+  background-color: #3b5998;
+  background-image:url('../images/bg.png');
+  font-size: 12px;
 }
 
-div.box{
-  background-color: #ffffff;
+body.frame{
+  background-color: #FFFFFF;
+  background-image: none;
+}
+
+div#page{
+  padding: 50px;
+}
+
+div#head{
+  padding-left: 10px;
+  height: 80px;
+}
+
+div#content{
+  float:left;
+  width: 100%;
+  background-color: #FFFFFF;
   -moz-border-radius: 15px; 
   -webkit-border-radius: 15px;
-  box-shadow: 10px 10px 5px #000000;
-  padding: 10px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
+  -moz-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
+}
+
+div#contentpad{
+  padding: 20px;
 }
 
 a,
@@ -22,12 +46,56 @@ a:active{
   text-decoration: none;
 }
 
-table#header{
-  width: 100%;
-  height: 100px;
-  background-color: #3b5998;
+div#me_profile img{
+  -moz-border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
+  -moz-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
 }
 
-table tr td{
+div#connect_button{
+  margin-top: 30px;
+  margin-right: 10px;
+  float: right;
+}
+
+table.main tr td{
+  vertical-align: top;
+}
+
+table.main table tr td{
+  vertical-align: middle;
+}
+
+table {
+  width: 100%;
+}
+
+table.result tr td{
   padding-right: 10px;
+}
+
+input {
+  width: 95%;
+}
+
+h2{
+  font-weight: bold;
+  font-size: 13px;
+  color: #FFFFFF;
+  background-color: #0154a0;
+  -moz-border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
+  -moz-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
+}
+
+iframe{
+  width: 99%;
+  height: 600px;
+  border: 0;
 }

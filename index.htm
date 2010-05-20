@@ -3,18 +3,105 @@
 	<head>
 		<title>Facebook Profiler</title>
 		<script type="text/javascript" src="libs/jquery.js"></script>
+		<link href="libs/profiler.css" media="screen" rel="stylesheet" type="text/css" />
 	<body>
 		
 		<script>
 		
+		var me = null;
+		
 		//triggers the update of the ui, once a user logged in successfully
 		function ui_login(){
-			$('#user').html("<a href='javascript: ;' onclick='logout_facebook()'>Logout</a>");
+			
+			//display a logout button
+			$('#connect_button').html("<a href='javascript: ;' onclick='logout_facebook()'><img src='images/logout.png' /></a>");
+			
+			//get the me
+			FB.api('/me', function(response) {
+			  me = response;
+				
+				var out = "<h2>Connected</h2><table><tr><td><a href='" + me.link + "'>" + me.name + "</a><br /><small>" + me.location.name + "</small></td>";
+				out += "<td><img src='https://graph.facebook.com/" + me.id + "/picture' /></td></tr></table>";
+				$('#me_profile').html(out);
+			});
+			
+			//get my friends
+			FB.api('/me/friends', function(response) {
+				
+				var out = "<h2>Friends (" + response.data.length + ")</h2>";
+				out += "<table><tr><td>";
+				
+				FB.Array.forEach(response.data, function(friend) {
+					out += "<a href='javascript: ;' onclick=\"ui_profile('" + friend.id + "')\">" + friend.name + "</a><br />";
+				});
+				
+				out += "</td></tr></table>";
+				
+				$('#me_friends').html(out);
+			});
+			
+			//display the search for people
+			var out = "<h2>Search for people</h2>";
+			out += "<table><tr><td><input name='search_field' id='search_field' /></td>";
+			out += "<td><a href='javascript: ;' onclick='ui_search()'>Search</a></td><tr></table>";
+			
+			$('#people_search').html(out);
+		}
+		
+		function ui_search(){
+			
+			//get the name to search for
+			var name_query = $('#search_field').val();
+			
+			var query = FB.Data.query('select name, uid, sex, hometown_location, current_location from user where name="' + name_query + '"');
+			
+			query.wait(function(people) {
+				
+				var out = "<h2>Results for '" + name_query + "' ("+people.length+")</h2><table class='result'>";
+				
+				FB.Array.forEach(people, function(person) {
+				    var location = null;
+						if(person.current_location != null) location = person.current_location.city + ", " + person.current_location.country;
+						else location = "No location given";
+
+						out += "<tr>";
+						out += "<td style='width: 1%'><img src='https://graph.facebook.com/" + person.uid + "/picture' /></td>";
+						out += "<td><a href='javascript: ;' onclick=\"ui_profile('" + person.uid + "')\">"+ person.name +"</a><br /><small>"+ location +"</small></td>";
+						out += "<td style='float: right;'><a href='javascript: ;' onclick=\"ui_profile('" + person.uid + "')\">Profile</a></td>";
+						out += "</tr>";
+				});
+			
+			out += "</table>";
+			$('#people_search_result').html(out);
+			
+			});
+			
+		}
+		
+		function ui_profile(uid){
+			
+			//hide the search panels and display the profile div
+			$('#people_search').hide();
+			$('#people_search_result').hide();
+			$('#person_profile').show();
+			
+			//display the profiler in an iframe with the id to profile
+			$('#person_profile_frame').html('<iframe src="profiler.php?profile=' + uid + '" frameborder="no"></iframe>');
+			
+		}
+		
+		//closes the profile div and redisplays the search results
+		function ui_back_to_search(){
+			//hide the search panels and display the profile div
+			$('#people_search').show();
+			$('#people_search_result').show();
+			$('#person_profile').hide();
+			$('#person_profile_frame').html('');
 		}
 		
 		//triggers the reset of the ui, once the user logged out
 		function ui_logout(){
-			$('#user').html("<a href='javascript: ;' onclick='login_facebook()'>Login</a>");
+			$('#connect_button').html("<a href='javascript: ;' onclick='login_facebook()'><img src='images/connect.png' /></a>");
 		}
 		
 		//starts the actual facebook login method, triggered by a button
@@ -43,7 +130,10 @@
 		<script>
 		
 			//initialize the facebook api
-		  FB.init({appId: '111354375573799', status: true, cookie: true, xfbml: true});
+		  FB.init({	appId: '111354375573799', 
+								status: true, 
+								cookie: true, 
+								xfbml: true});
 		
 			//subscribe to a changing session, e.g. after the login button is pushed in the popup
 		  FB.Event.subscribe('auth.sessionChange', function(response) {
@@ -53,19 +143,56 @@
 		      ui_logout();
 		    }
 		  });
-			
-			//check if the user is logged in or not and display the depending ui
-			FB.getLoginStatus(function(response) {
+		
+			//login with permissions
+			FB.login(function(response) {
 			  if (response.session) {
-			    ui_login()();
+			    if (response.perms) {
+			      ui_login();
+			    } else {
+			      // user is logged in, but did not grant any permissions ## todo, show tp user
+			    }
 			  } else {
-			    ui_logout()();
+			    ui_logout();
 			  }
-			});
+			}, {perms:'read_stream,user_status,friends_status,read_friendlists'});
+			
 		</script>
 		
-		<!-- user login and log out button -->
-		<div id="user"></div>
+		<!-- white big box -->
+		<div id="page">
+			
+			<div id="head">
+				<img src="images/logo.png" />
+				<div id="connect_button"></div>
+			</div>
+			<div id="content"><div id="contentpad">
+				
+				<table class="main">
+					<tr>
+						<td>
+							<div id="people_search"></div>
+							<div id="people_search_result"></div>
+							<div id="person_profile" style="display: none;">
+								<table>
+									<tr>
+										<td><h2>Profile Results</h2></td>
+										<td style="width: 150px;"><a href='javascript: ;' onclick="ui_back_to_search()">Back to search results</a></td>
+									</tr>
+								</table>
+								<div id="person_profile_frame"></div>
+							</div>
+						</td>
+						<td style="width: 200px;">
+							<div id="me_profile"></div>
+							<div id="me_friends"></div>
+						</td>
+					</tr>
+				</table>
+				
+			</div></div>
+		
+		</div>
 		
 </body>
 </html>
