@@ -11,6 +11,7 @@ body{
 body.frame{
   background-color: #FFFFFF;
   background-image: none;
+  padding: 10px;
 }
 
 div#page{
@@ -75,6 +76,10 @@ table.result tr td{
   padding-right: 10px;
 }
 
+table tr th{
+  text-align: left;
+}
+
 input {
   width: 95%;
 }
@@ -98,4 +103,9 @@ iframe{
   width: 99%;
   height: 600px;
   border: 0;
+}
+
+div.words{
+  width: 300px;
+  color: #5A5A5A;
 }

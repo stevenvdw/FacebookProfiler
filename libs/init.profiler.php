@@ -1,7 +1,13 @@
 <?php
 
 //load the pre-build facebook classes
-require 'facebook.php';
+require 'libs/facebook.php';
+
+//declare the globals
+global $facebook;
+global $session;
+global $me_uid;
+global $profile_uid;
 
 //instantiate a new facebook object
 $facebook = new Facebook(array(
@@ -12,14 +18,12 @@ $facebook = new Facebook(array(
 
 //get the session
 $session = $facebook->getSession();
-$profile_uid = null;
 
 //check login session
 if ($session) {
   try {
     $me_uid = $facebook->getUser();
 		$profile_uid = $_REQUEST['profile'];
-    //$me = $facebook->api('/me');
   } catch (FacebookApiException $e) {
 		header('Location: '.$facebook->getLoginUrl(array('req_perms' => 'read_stream,user_status,friends_status,read_friendlists')));
     error_log($e);

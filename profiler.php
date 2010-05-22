@@ -1,15 +1,13 @@
 <?php
 
-//init the profiler
+//init the profiler & load the profiler
 require 'libs/init.profiler.php';
+require 'libs/class.profiler.php';
 
-
-$statuses = $facebook->api(array(
-  'method'  => 'fql.query',
-  'query' => 'SELECT uid,status_id,message FROM status WHERE uid="'.$profile_uid.'"'
-));
+//create the profiler and pass it over to the view
+$facebookProfiler = new FacebookProfiler($facebook, $profile_uid);
 
 //render the template
-require 'libs/temp.profiler.php';
+require 'libs/view.profiler.php';
 
 ?>
