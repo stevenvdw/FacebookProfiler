@@ -99,13 +99,32 @@ h2{
   -moz-box-shadow: rgba(0, 0, 0, 0.246094) 0.25em 0.25em 1em;
 }
 
+h3{
+  margin-bottom: 0px;
+}
+
+#photo{
+  margin: 20px;
+  text-align: center;
+}
+
 iframe{
   width: 99%;
-  height: 600px;
+  height: 2000px;
   border: 0;
 }
 
 div.words{
   width: 300px;
   color: #5A5A5A;
+}
+
+span.error{
+  color: red;
+  font-weight: bold;
+}
+
+span.ok{
+  color: green;
+  font-weight: bold;
 }

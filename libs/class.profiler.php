@@ -10,6 +10,9 @@ class FacebookProfiler{
   //wordking data
 	private $profile;
   private $statuses;
+	private $groups;
+	private $photos;
+	private $streams;
 	
 	//the constructor needs the facebook connect object and the id that is to profile
 	public function __construct($facebook, $profile_uid) {
@@ -35,12 +38,48 @@ class FacebookProfiler{
       'method'  => 'fql.query',
       'query' => 'SELECT uid, time, status_id, message FROM status WHERE uid="'.$this->profile_uid.'"'
     ));
-    
+
+	  //get all groups
+	  $this->groups = $this->facebook->api(array(
+      'method'  => 'fql.query',
+      'query' => 'SELECT name FROM group WHERE gid IN(SELECT gid FROM group_member WHERE uid="'.$this->profile_uid.'")'
+    ));
+
+	  //get all photos
+	  $this->photos = $this->facebook->api(array(
+      'method'  => 'fql.query',
+      'query' => 'SELECT src_big, caption, created FROM photo WHERE pid IN(SELECT pid FROM photo_tag WHERE subject="'.$this->profile_uid.'" ORDER BY created DESC)'
+    ));
+
+	  //get all streams
+	  $this->streams = $this->facebook->api(array(
+      'method'  => 'fql.query',
+      'query' => 'SELECT message, created_time, actor_id, comments FROM stream WHERE source_id ="'.$this->profile_uid.'" AND actor_id <>"'.$this->profile_uid.'" ORDER BY created_time DESC'
+    ));
+
+	}
+	
+	//this checks if any statuses, groups, photos and so on were received
+	public function dataLoadingList(){
+		
+		//check if variables empty
+		$out.="<span class='".(empty($this->profile) ? "error" : "ok")."'>Profile</span>";
+		$out.=", <span class='".(empty($this->statuses) ? "error" : "ok")."'>Statuses</span>";
+		$out.=", <span class='".(empty($this->groups) ? "error" : "ok")."'>Groups</span>";
+		$out.=", <span class='".(empty($this->photos) ? "error" : "ok")."'>Photos</span>";
+		$out.=", <span class='".(empty($this->streams) ? "error" : "ok")."'>Streams</span>";
+		
+		return $out;
 	}
 	
 	//get the name of the profiled user
 	public function getName(){
 		return $this->profile['name'];
+	}
+	
+	//get the name of the profiled user
+	public function getStatus(){
+		return $this->statuses[0]['message'];
 	}
 	
 	//how many statuses has the profiled user casted
@@ -109,7 +148,7 @@ class FacebookProfiler{
 	
 	//filter all the status messages for an array of words. if count per status is set to 1 multiple
 	//occurances of the filtered words in one status are only counted as one
-	public function filterForWordsCount($words = array(), $countPerStatus = 0){
+	public function filterForStatusWordsCount($words = array(), $countPerStatus = 0){
 		
 		$sumWords = 0;
 		
@@ -133,6 +172,117 @@ class FacebookProfiler{
 		
 		//return the amount of found occurances
 		return $sumWords;
+	}
+	
+	//how many groups has the profiled user
+	public function getGroupCount(){
+	  return count($this->groups);
+	}
+	
+	//filter all the status messages for an array of words. if count per status is set to 1 multiple
+	//occurances of the filtered words in one status are only counted as one
+	public function filterForGroupWordsCount($words = array(), $countPerGroup = 0){
+		
+		$sumWords = 0;
+		
+		//sum up the hours and minutes of all status messages
+		foreach ($this->groups as $key => $group){
+			foreach ($words as $word){
+				
+				//search for the word
+				$word = '/'.preg_quote($word).'/';
+				preg_match($word, $group['name'], $matches);
+				$found = count($matches);
+				
+				//if found is bigger than 1 add either count or 1 to the sum of the words
+				if($found > 0){
+					$sumWords += 1;
+				}
+				
+			}
+		}
+		
+		//return the amount of found occurances
+		return $sumWords;
+	}
+	
+	//how many photos has the profiled user been tagged in
+	public function getPhotoCount(){
+	  return count($this->photos);
+	}
+	
+	//returns the javascript json array with all photo urls
+	public function getPhotoListAsJSON(){
+	  return "var photos = ".json_encode($this->photos).";";
+	}
+	
+	//how many stream items have been casted for the profiled user
+	public function getStreamCount(){
+	  return count($this->streams);
+	}
+	
+	//how many different users contributed content to the users stream
+	public function getStreamActorCount(){
+		
+		$actors = array();
+		
+		//add the unique actor_ids to the actors array
+		foreach ($this->streams as $key => $stream){
+			if(!in_array($stream['actor_id'], $actors)) array_push($actors, $stream['actor_id']);
+		}
+		
+	  return count($actors);
+	}
+	
+	//how many different users contributed content to the users stream
+	public function getAverageStreamComments(){
+		
+		$allComments = 0;
+		
+		//sum up the count of the comments
+		foreach ($this->streams as $key => $stream){
+			$allComments += $stream['comments']['count'];
+		}
+		
+	  return $allComments / $this->getStreamCount();
+	}
+	
+	//how many different users contributed content to the users stream
+	public function getFirstStreamActorTime(){
+		$firstCast = end($this->streams);
+		return $firstCastDate = $firstCast['created_time'];
+	}
+	
+	//filter all the status messages for an array of words. if count per status is set to 1 multiple
+	//occurances of the filtered words in one status are only counted as one
+	public function filterForStreamWordsCount($words = array(), $countPerStream = 0){
+		
+		$sumWords = 0;
+		
+		//sum up the hours and minutes of all status messages
+		foreach ($this->streams as $key => $stream){
+			foreach ($words as $word){
+				
+				//search for the word
+				$word = '/'.preg_quote($word).'/';
+				preg_match($word, $stream['message'], $matches);
+				$found = count($matches);
+				
+				//if found is bigger than 1 add either count or 1 to the sum of the words
+				if($found > 0){
+					$sumWords += 1;
+				}
+				
+			}
+		}
+		
+		//return the amount of found occurances
+		return $sumWords;
+	}
+	
+	//how many different users contributed content to the users stream
+	public function getStreamRollingStoneFactor(){
+		return ($this->getStreamActorCount() / $this->getStreamCount()) * 100;
 	}
 	
 }
