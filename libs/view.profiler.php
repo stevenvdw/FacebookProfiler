@@ -12,19 +12,35 @@ $date_format = 'l, d.m.Y - H:i';
 
 //positive words list
 $positive_words = array('easy', 'amazing', 'wonderful', 'great', 'cool', 'fantastic', 'marvellous', 'happy',
-'fun', 'sun', 'party', 'legendary', 'funny');
+'fun', 'sun', 'legendary', 'funny');
+
+//german additions
+array_push($positive_words, 'einfach', 'super', 'toll', 'klasse', 'prima', 'gut', 'wunderbar', 'stark', 
+'fantastisch', 'glücklich', 'spass', 'sonne', 'legendär', 'witzig');
 
 //positive words list
 $negative_words = array('bad', 'sad', 'unhappy', 'horrible', 'embarrasing', 'ridiculous', 'synical', 'unsafe',
 'punished', 'lonely', 'misunderstood', 'rejected', 'unimportant', 'insane');
 
+//german additions
+array_push($negative_words, 'schlecht', 'traurig', 'unglücklich', 'schrecklich', 'peinlich', 'lächerlich',
+'zynisch', 'unsicher', 'bestraft', 'einsam', 'unwichtig', 'verrückt', 'blöd', 'uncool');
+
 //party words list
 $party_words = array('party', 'drunk', 'wasted', 'hang', 'over', 'last night', 'puke', 'throw up',
 'drink', 'beer', 'cocktail', 'alcohol', 'drugs');
 
+//german additions
+array_push($party_words, 'partey', 'betrunken', 'besoffen', 'kater', 'letzte nacht', 'spucken',
+'kotzen', 'trinken', 'bier', 'alkohol', 'drogen', 'kondom', 'übel', 'blau', 'flitzen');
+
 //vulgarity words list
-$vulgarity_words = array('sex', 'fuck', 'bitch', 'idiot', 'ass hole', 'retarded', 'dumb ass', 'fool',
+$vulgarity_words = array('sex', 'fuck', 'bitch', 'idiot', 'ass hole', 'retarded', 'dumb ass',
 'cunt', 'clit', 'dork', 'whore', 'nude');
+
+//german additions
+array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'dummkopf', 'pussy',
+'vollidiot', 'hure', 'nackt');
 
 ?>
 
@@ -54,6 +70,40 @@ $vulgarity_words = array('sex', 'fuck', 'bitch', 'idiot', 'ass hole', 'retarded'
 				<td>Loading Status</td>
 				<td><?php echo $facebookProfiler->dataLoadingList(); ?></td>
 				<td><small>What data streams are not privacy proteced and accessible?</small></td>
+			</tr>
+			
+			<tr>
+				<td colspan='3'><h3>Profile Trend</h3></td>
+			</tr>
+			
+			<tr>
+				<td>Positive</td>
+				<td style="color: green;"><?php echo $facebookProfiler->getTrend($positive_words); ?>%</td>
+				<td><small>Based on the positive words in the relation with all casted streams</small></td>
+			</tr>
+			
+			<tr>
+				<td>Negative</td>
+				<td style="color: blue;"><?php echo $facebookProfiler->getTrend($negative_words); ?>%</td>
+				<td><small>Based on the negative words in the relation with all casted streams</small></td>
+			</tr>
+			
+			<tr>
+				<td>Party</td>
+				<td style="color: orange;"><?php echo $facebookProfiler->getTrend($party_words); ?>%</td>
+				<td><small>Based on the party words in the relation with all casted streams</small></td>
+			</tr>
+			
+			<tr>
+				<td>Vulgarity</td>
+				<td style="color: red;"><?php echo $facebookProfiler->getTrend($vulgarity_words); ?>%</td>
+				<td><small>Based on the vulgarity words in the relation with all casted streams</small></td>
+			</tr>
+			
+			<tr>
+				<td>Trend Quality</td>
+				<td><?php echo $facebookProfiler->getTrendQuality(); ?>%</td>
+				<td><small>Based on the accessible sources and quantity of contributions</small></td>
 			</tr>
 			
 			<tr>
@@ -94,6 +144,12 @@ $vulgarity_words = array('sex', 'fuck', 'bitch', 'idiot', 'ass hole', 'retarded'
 				<td>Average Status Casting Time</td>
 				<td><?php echo $facebookProfiler->getAverageStatusCastingTime(); ?></td>
 				<td><small>When did the user cast the statuses in the average?</small></td>
+			</tr>
+			
+			<tr>
+				<td>Status Words Count</td>
+				<td><?php echo $facebookProfiler->getStatusCastingWordsCount(); ?></td>
+				<td><small>How much words did the user cast ever?</small></td>
 			</tr>
 			
 			<tr>
@@ -195,9 +251,9 @@ $vulgarity_words = array('sex', 'fuck', 'bitch', 'idiot', 'ass hole', 'retarded'
 			</tr>
 			
 			<tr>
-				<td>Rolling Stone Actor Factor</td>
+				<td>Rolling Stone Actors Factor</td>
 				<td><?php echo $facebookProfiler->getStreamRollingStoneFactor(); ?>%</td>
-				<td><small>How many different users contributed content to the users stream in therelation to all contributions?</small></td>
+				<td><small>How many different users contributed content to the users stream in the relation to all contributions?</small></td>
 			</tr>
 			
 			<tr>
