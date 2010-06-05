@@ -69,7 +69,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Loading Status</td>
 				<td><?php echo $facebookProfiler->dataLoadingList(); ?></td>
-				<td><small>What data streams are not privacy proteced and accessible?</small></td>
+				<td><small>What data sources are not privacy proteced and accessible?</small></td>
 			</tr>
 			
 			<tr>
@@ -79,25 +79,25 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Positive</td>
 				<td style="color: green;"><?php echo $facebookProfiler->getTrend($positive_words); ?>%</td>
-				<td><small>Based on the positive words in the relation with all casted streams</small></td>
+				<td><small>Based on the positive words in relation to all casted streams</small></td>
 			</tr>
 			
 			<tr>
 				<td>Negative</td>
 				<td style="color: blue;"><?php echo $facebookProfiler->getTrend($negative_words); ?>%</td>
-				<td><small>Based on the negative words in the relation with all casted streams</small></td>
+				<td><small>Based on the negative words in relation to all casted streams</small></td>
 			</tr>
 			
 			<tr>
 				<td>Party</td>
 				<td style="color: orange;"><?php echo $facebookProfiler->getTrend($party_words); ?>%</td>
-				<td><small>Based on the party words in the relation with all casted streams</small></td>
+				<td><small>Based on the party words in relation to all casted streams</small></td>
 			</tr>
 			
 			<tr>
 				<td>Vulgarity</td>
 				<td style="color: red;"><?php echo $facebookProfiler->getTrend($vulgarity_words); ?>%</td>
-				<td><small>Based on the vulgarity words in the relation with all casted streams</small></td>
+				<td><small>Based on the vulgarity words in relation to all casted streams</small></td>
 			</tr>
 			
 			<tr>
@@ -149,7 +149,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Status Words Count</td>
 				<td><?php echo $facebookProfiler->getStatusCastingWordsCount(); ?></td>
-				<td><small>How much words did the user cast ever?</small></td>
+				<td><small>How many words did the user cast ever?</small></td>
 			</tr>
 			
 			<tr>
@@ -195,14 +195,14 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Group Count</td>
 				<td><?php echo $facebookProfiler->getGroupCount(); ?></td>
-				<td><small>The amount of groups the user is in</small></td>
+				<td><small>How many groups did the user join?</small></td>
 			</tr>
 			
 			<tr>
 				<td>Positive Words Filter in Group Names</td>
 				<td><?php echo $facebookProfiler->filterForGroupWordsCount($positive_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $positive_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -211,7 +211,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Negative Words Filter in Group Names</td>
 				<td><?php echo $facebookProfiler->filterForGroupWordsCount($negative_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $negative_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -220,7 +220,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Party Words Filter in Group Names</td>
 				<td><?php echo $facebookProfiler->filterForGroupWordsCount($party_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $party_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -229,7 +229,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Vulgarity Words Filter in Group Names</td>
 				<td><?php echo $facebookProfiler->filterForGroupWordsCount($vulgarity_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $vulgarity_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -241,7 +241,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Stream Count</td>
 				<td><?php echo $facebookProfiler->getStreamCount(); ?></td>
-				<td><small>The amount of stream items that have been added by other users </small></td>
+				<td><small>The amount of stream items that have been added by OTHER users</small></td>
 			</tr>
 			
 			<tr>
@@ -253,26 +253,26 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Rolling Stone Actors Factor</td>
 				<td><?php echo $facebookProfiler->getStreamRollingStoneFactor(); ?>%</td>
-				<td><small>How many different users contributed content to the users stream in the relation to all contributions?</small></td>
+				<td><small>How many different users contributed content to the users stream in relation to all contributions?</small></td>
 			</tr>
 			
 			<tr>
 				<td>Average Stream Comments</td>
 				<td><?php echo $facebookProfiler->getAverageStreamComments(); ?></td>
-				<td><small>How many comments have averagely been made to every stream entry?</small></td>
+				<td><small>How many comments has every stream entry in the average?</small></td>
 			</tr>
 			
 			<tr>
 				<td>First Stream Contribution Date</td>
 				<td><?php echo date($date_format, $facebookProfiler->getFirstStreamActorTime()); ?></td>
-				<td><small>When did someone contribute content to the stream for the first time?</small></td>
+				<td><small>The first time someone contributed content to the stream?</small></td>
 			</tr>
 			
 			<tr>
 				<td>Positive Words Filter in Stream Messages</td>
 				<td><?php echo $facebookProfiler->filterForStreamWordsCount($positive_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $positive_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -281,7 +281,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Negative Words Filter in Stream Messages</td>
 				<td><?php echo $facebookProfiler->filterForStreamWordsCount($negative_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $negative_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -290,7 +290,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Party Words Filter in Stream Messages</td>
 				<td><?php echo $facebookProfiler->filterForStreamWordsCount($party_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $party_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -299,7 +299,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 				<td>Vulgarity Words Filter in Stream Messages</td>
 				<td><?php echo $facebookProfiler->filterForStreamWordsCount($vulgarity_words); ?></td>
 				<td>
-					<small>How often contains the group name one of the specified words:</small><br />
+					<small>How often does the group name contain one of the specified words:</small><br />
 					<div class='words'><small><i><?php echo implode(', ', $vulgarity_words); ?></i></small></div>
 				</td>
 			</tr>
@@ -311,7 +311,7 @@ array_push($vulgarity_words, 'ficken', 'schlampe', 'arschloch', 'fick dich', 'du
 			<tr>
 				<td>Photo Tags</td>
 				<td><?php echo $facebookProfiler->getPhotoCount(); ?></td>
-				<td><small>How many photos of the user have been tagged</small></td>
+				<td><small>How many photos of the user have been tagged?</small></td>
 			</tr>
 			
 			<tr>
