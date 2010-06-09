@@ -128,3 +128,9 @@ span.ok{
   color: green;
   font-weight: bold;
 }
+
+#help p{
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: justify;
+}
